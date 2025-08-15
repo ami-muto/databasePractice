@@ -1,4 +1,5 @@
 -- 問題1. postgresqlでpracticeデータベースを生成するSQL文を記述してください。
+
 CREATE DATABASE practice;
 -- 問題2. postgresqlでpracticeデータベースのusersテーブルを生成するSQL文を記述してください。
  CREATE TYPE gender AS ENUM('Man', 'Woman', 'Other');
