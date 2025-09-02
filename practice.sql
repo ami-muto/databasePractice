@@ -1,0 +1,509 @@
+-- 問1
+-- 国名を全て抽出してください。
+SELECT 
+    name
+FROM 
+    countries
+;
+
+-- 問2
+-- ヨーロッパに属する国をすべて抽出してください。
+SELECT
+    code,
+    name,
+    continent,
+    region,
+    surface_area
+FROM
+    countries
+WHERE
+    continent = 'Europe'
+ORDER BY
+    name ASC
+;
+
+-- 問3
+-- ヨーロッパ以外に属する国をすべて抽出してください。
+SELECT
+    code,
+    name,
+    continent,
+    region,
+    surface_area
+FROM
+    countries
+WHERE
+    continent <> 'Europe'
+ORDER BY
+    name ASC
+;
+
+-- 問4
+-- 人口が10万人以上の国をすべて抽出してください。
+SELECT
+    code,
+    name,
+    contitinent,
+    region,
+    surface_area,
+    indep_year,
+    population
+FROM
+    countries
+WHERE
+    population >= 100000
+ORDER BY
+    population DESC 
+;
+
+-- 問5
+-- 平均寿命が56歳から76歳の国をすべて抽出してください。
+SELECT
+    code,
+    name,
+    contitinent,
+    region,
+    surface_area,
+FROM
+    countries
+WHERE
+    life_expectancy BETWEEN 56 AND 76
+ORDER BY
+    life_expectancy ASC
+;
+
+-- 問6
+-- 国コードがNLB,ALB,DZAのもの市区町村をすべて抽出してください。
+SELECT
+    id,
+    name,
+    country_code,
+    district,
+    population
+FROM
+    cities
+WHERE
+    country_code IN ('NLB', 'ALB', 'DZA')
+ORDER BY
+    country_code ASC, 
+    id ASC
+;
+
+-- 問7
+-- 独立独立記念日がない国をすべて抽出してください。
+SELECT
+    code,
+    name,
+    continent,
+    region,
+    surface_area,
+    indep_year
+FROM
+    countries
+WHERE
+    indep_year IS NULL
+ORDER BY
+    code ASC,
+    name ASC
+;
+
+-- 問8
+-- 独立独立記念日がある国をすべて抽出してください。
+SELECT
+    code,
+    name,
+    continent,
+    region,
+    surface_area,
+    indep_year
+FROM
+    countries
+WHERE
+    indep_year IS NOT NULL
+ORDER BY
+    code ASC
+;
+
+-- 問9
+-- 名前の末尾が「ia」で終わる国を抽出してください。
+SELECT
+    code,
+    name,
+    continent,
+    region,
+    surface_area
+FROM
+    countries
+WHERE
+    name LIKE '%ia%'
+ORDER BY
+    name ASC
+;
+
+-- 問10
+-- 名前の中に「st」が含まれる国を抽出してください。
+SELECT
+    code,
+    name,
+    continent,
+    region,
+    surface_area
+FROM
+    countries
+WHERE
+    name LIKE '%st%'
+ORDER BY
+    code ASC,
+    name ASC
+;
+
+-- 問11
+-- 名前が「an」で始まる国を抽出してください。
+SELECT
+    code,
+    name,
+    continent,
+    region,
+    surface_area,
+    indep_year
+FROM
+    countries
+WHERE
+    name ILIKE 'an%'
+ORDER BY
+    code ASC
+;
+
+-- 問12
+-- 全国の中から独立記念日が1990年より前または人口が10万人より多い国を全て抽出してください。
+SELECT
+    code,
+    name,
+    continent,
+    region,
+    surface_area,
+    indep_year
+FROM
+    countries
+WHERE
+    indep_year < 1990
+    OR population > 100000
+ORDER BY
+    name ASC
+;
+-- 問13
+-- コードがDZAもしくはALBかつ独立記念日が1990年より前の国を全て抽出してください。
+SELECT
+    code,
+    name,
+    continent,
+    region,
+    surface_area,
+    indep_year
+FROM
+    countries
+WHERE
+    (code = 'DZA' OR code = 'ALB')
+    AND indep_year < 1990
+ORDER BY
+    name ASC
+;
+
+-- 問14
+-- 全ての地方をグループ化せずに表示してください。
+SELECT 
+    region
+FROM 
+    countries
+;
+
+-- 問15
+-- 国名と人口を以下のように表示させてください。シングルクォートに注意してください。
+-- 「Arubaの人口は103000人です」
+SELECT
+    name || 'の人口は' || population || '人です' AS population
+FROM
+    countries
+ORDER BY
+    name ASC
+;
+
+-- 問16
+-- 平均寿命が短い順に国名を表示させてください。ただしNULLは表示させないでください。
+SELECT
+    name,
+    life_expectancy
+FROM
+    countries
+WHERE
+    life_expectancy IS NOT NULL
+ORDER BY
+    life_expectancy ASC
+;
+
+-- 問17
+-- 平均寿命が長い順に国名を表示させてください。ただしNULLは表示させないでください。
+SELECT
+    name,
+    life_expectancy
+FROM
+    countries
+WHERE
+    life_expectancy IS NOT NULL
+ORDER BY
+    life_expectancy DESC
+;
+
+-- 問18
+-- 平均寿命が長い順、独立記念日が新しい順に国を表示させてください。
+SELECT
+    name,
+    life_expectancy,
+    indep_year
+FROM
+    countries
+WHERE
+    life_expectancy IS NOT NULL
+    AND indep_year IS NOT NULL
+ORDER BY
+    life_expectancy DESC,
+    indep_year DESC
+;
+
+-- 問19
+-- 全ての国の国コードの一文字目と国名を表示させてください。
+SELECT
+    SUBSTRING(code, 1, 1),
+    name
+FROM
+    countries
+ORDER BY
+    SUBSTRING(code, 1, 1) ASC,
+    name ASC
+;
+
+
+-- 問20
+-- 国名が長いものから順に国名と国名の長さを出力してください。
+SELECT
+    name,
+    LENGTH(name)
+FROM
+    countries
+ORDER BY
+    LENGTH(name) DESC
+;
+
+
+-- 問21
+-- 全ての地方の平均寿命、平均人口を表示してください。(NULLも表示)
+SELECT
+    region AS "region\n地方",
+    AVG(life_expectancy) AS "平均寿命",
+    AVG(population) AS "平均人口"
+FROM
+    countries
+WHERE
+    life_expectancy IS NOT NULL
+    AND population IS NOT NULL
+GROUP BY
+    region
+ORDER BY
+    region ASC
+;
+
+
+-- 問22
+-- 全ての地方の最長寿命、最大人口を表示してください。(NULLも表示)
+SELECT
+    region AS "region\n地方",
+    MAX(life_expectancy) AS "最大寿命",
+    MAX(population) AS "最大人口"
+FROM
+    countries
+WHERE
+    life_expectancy IS NOT NULL
+    AND population IS NOT NULL
+GROUP BY
+    region
+ORDER BY
+    region ASC
+;
+
+
+-- 問23
+-- アジア大陸の中で最小の表面積を表示してください
+SELECT
+    MIN(surface_area) AS アジアの最小表面積
+FROM
+    countries
+WHERE
+    continent = 'Asia'
+;
+
+
+-- 問24
+-- アジア大陸の表面積の合計を表示してください。
+SELECT
+    SUM(surface_area) AS アジア大陸の表面積の合計
+FROM
+    countries
+WHERE
+    continent = 'Asia'
+;
+
+-- 問25
+-- 全ての国と言語を表示してください。一つの国に複数言語があると思いますので同じ国名を言語数だけ出力してください。
+SELECT
+    c.name,
+    cl.language
+FROM
+    countries c
+JOIN
+    country_languages cl ON c.code = cl.country_code
+;
+
+
+
+-- 問26
+-- 全ての国と言語と市区町村を表示してください。
+SELECT
+    c.name AS 国名,
+    ci.name AS 市区町村名,
+    cl.language 
+FROM
+    countries c
+JOIN
+    cities ci ON c.code = ci.country_code
+JOIN
+    country_languages cl ON c.code = cl.country_code
+ORDER BY
+    国名 ASC,
+    市区町村名 ASC,
+    language ASC
+;
+
+
+
+-- 問27
+-- 全ての有名人を出力してください。左側外部結合を使用して国名なし（country_codeがNULL）も表示してください。
+SELECT
+    celeb.name,
+    c.name
+FROM
+    celebrities celeb
+LEFT JOIN
+    countries c ON celeb.country_code = c.code
+ORDER BY
+    celeb.name ASC,
+    c.name ASC NULLS LAST
+;
+
+
+-- 問28
+-- 全ての有名人の名前,国名、第一言語を出力してください。
+SELECT
+    celeb.name,
+    c.name,
+    cl.language
+FROM
+    celebrities celeb
+LEFT JOIN
+    countries c ON celeb.country_code = c.code
+LEFT JOIN (
+    SELECT
+        main.country_code,
+        main.language
+    FROM
+        country_languages main
+    INNER JOIN (
+        SELECT
+            country_code,
+            MAX(percentage) AS max_percentage
+        FROM
+            country_languages
+        WHERE
+            is_official = 'T'
+        GROUP BY
+            country_code
+    ) sub ON main.country_code = sub.country_code
+         AND main.percentage = sub.max_percentage
+         AND main.is_official = 'T'
+) cl ON celeb.country_code = cl.country_code
+ORDER BY
+    celeb.name ASC
+;
+
+
+-- 問29
+-- 全ての有名人の名前と国名をに出力してください。 ただしテーブル結合せずサブクエリを使用してください。
+SELECT
+    celeb.name,
+    c.name AS 国名
+FROM
+    celebrities celeb
+LEFT JOIN
+    countries c ON celeb.country_code = c.code
+;
+
+
+-- 問30
+-- 最年長が50歳以上かつ最年少が30歳以下の国を表示させてください。
+SELECT
+    country_code,
+    MAX(age),
+    MIN(age)
+FROM
+    celebrities
+WHERE
+    country_code IS NOT NULL
+    AND TRIM(country_code) <> ''
+GROUP BY
+    country_code
+HAVING
+    MAX(age) >= 50 AND MIN(age) <= 30
+ORDER BY
+    country_code ASC
+;
+
+
+-- 問31
+-- 1991年生まれと、1981年生まれの有名人が何人いるか調べてください。ただし、日付関数は使用せず、UNION句を使用してください。
+SELECT 誕生年, 人数
+FROM (
+    SELECT '1991' AS 誕生年, COUNT(*) AS 人数
+    FROM celebrities
+    WHERE birth::text LIKE '1991-%'
+
+    UNION
+
+    SELECT '1981' AS 誕生年, COUNT(*) AS 人数
+    FROM celebrities
+    WHERE birth::text LIKE '1981-%'
+) AS birth_counts
+WHERE 人数 = (
+    SELECT COUNT(*)
+    FROM celebrities
+    WHERE birth::text LIKE '1991-%'
+)
+ORDER BY 誕生年
+;
+
+
+
+-- 問32
+-- 有名人の出身国の平均年齢を高い方から順に表示してください。ただし、FROM句はcountriesテーブルとしてください。
+SELECT
+    c.name AS 国名,
+    ROUND(AVG(ce.age), 1) AS 平均年齢
+FROM
+    countries c
+JOIN
+    celebrities ce ON c.code = ce.country_code
+WHERE
+    TRIM(c.code) <> ''
+GROUP BY
+    c.name
+ORDER BY
+    平均年齢 DESC
+;
