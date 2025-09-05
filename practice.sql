@@ -18,8 +18,6 @@ FROM
     countries
 WHERE
     continent = 'Europe'
-ORDER BY
-    name ASC
 ;
 
 -- 問3
@@ -34,8 +32,6 @@ FROM
     countries
 WHERE
     continent <> 'Europe'
-ORDER BY
-    name ASC
 ;
 
 -- 問4
@@ -52,8 +48,6 @@ FROM
     countries
 WHERE
     population >= 100000
-ORDER BY
-    population DESC 
 ;
 
 -- 問5
@@ -68,8 +62,6 @@ FROM
     countries
 WHERE
     life_expectancy BETWEEN 56 AND 76
-ORDER BY
-    life_expectancy ASC
 ;
 
 -- 問6
@@ -84,9 +76,6 @@ FROM
     cities
 WHERE
     country_code IN ('NLB', 'ALB', 'DZA')
-ORDER BY
-    country_code ASC, 
-    id ASC
 ;
 
 -- 問7
@@ -102,9 +91,6 @@ FROM
     countries
 WHERE
     indep_year IS NULL
-ORDER BY
-    code ASC,
-    name ASC
 ;
 
 -- 問8
@@ -120,8 +106,6 @@ FROM
     countries
 WHERE
     indep_year IS NOT NULL
-ORDER BY
-    code ASC
 ;
 
 -- 問9
@@ -135,9 +119,7 @@ SELECT
 FROM
     countries
 WHERE
-    name LIKE '%ia%'
-ORDER BY
-    name ASC
+    name LIKE '%ia'
 ;
 
 -- 問10
@@ -152,9 +134,6 @@ FROM
     countries
 WHERE
     name LIKE '%st%'
-ORDER BY
-    code ASC,
-    name ASC
 ;
 
 -- 問11
@@ -170,8 +149,6 @@ FROM
     countries
 WHERE
     name ILIKE 'an%'
-ORDER BY
-    code ASC
 ;
 
 -- 問12
@@ -188,8 +165,6 @@ FROM
 WHERE
     indep_year < 1990
     OR population > 100000
-ORDER BY
-    name ASC
 ;
 -- 問13
 -- コードがDZAもしくはALBかつ独立記念日が1990年より前の国を全て抽出してください。
@@ -205,13 +180,11 @@ FROM
 WHERE
     (code = 'DZA' OR code = 'ALB')
     AND indep_year < 1990
-ORDER BY
-    name ASC
 ;
 
 -- 問14
 -- 全ての地方をグループ化せずに表示してください。
-SELECT 
+SELECT DISTINCT
     region
 FROM 
     countries
@@ -221,12 +194,11 @@ FROM
 -- 国名と人口を以下のように表示させてください。シングルクォートに注意してください。
 -- 「Arubaの人口は103000人です」
 SELECT
-    name || 'の人口は' || population || '人です' AS population
+    name || 'の人口は' || population || '人です' AS "population"
 FROM
     countries
-ORDER BY
-    name ASC
 ;
+
 
 -- 問16
 -- 平均寿命が短い順に国名を表示させてください。ただしNULLは表示させないでください。
@@ -262,9 +234,6 @@ SELECT
     indep_year
 FROM
     countries
-WHERE
-    life_expectancy IS NOT NULL
-    AND indep_year IS NOT NULL
 ORDER BY
     life_expectancy DESC,
     indep_year DESC
@@ -277,9 +246,6 @@ SELECT
     name
 FROM
     countries
-ORDER BY
-    SUBSTRING(code, 1, 1) ASC,
-    name ASC
 ;
 
 
@@ -303,14 +269,9 @@ SELECT
     AVG(population) AS "平均人口"
 FROM
     countries
-WHERE
-    life_expectancy IS NOT NULL
-    AND population IS NOT NULL
 GROUP BY
-    region
-ORDER BY
-    region ASC
-;
+    region;
+
 
 
 -- 問22
@@ -321,9 +282,6 @@ SELECT
     MAX(population) AS "最大人口"
 FROM
     countries
-WHERE
-    life_expectancy IS NOT NULL
-    AND population IS NOT NULL
 GROUP BY
     region
 ORDER BY
@@ -377,10 +335,6 @@ JOIN
     cities ci ON c.code = ci.country_code
 JOIN
     country_languages cl ON c.code = cl.country_code
-ORDER BY
-    国名 ASC,
-    市区町村名 ASC,
-    language ASC
 ;
 
 
@@ -394,9 +348,6 @@ FROM
     celebrities celeb
 LEFT JOIN
     countries c ON celeb.country_code = c.code
-ORDER BY
-    celeb.name ASC,
-    c.name ASC NULLS LAST
 ;
 
 
@@ -430,20 +381,21 @@ LEFT JOIN (
          AND main.percentage = sub.max_percentage
          AND main.is_official = 'T'
 ) cl ON celeb.country_code = cl.country_code
-ORDER BY
-    celeb.name ASC
 ;
 
 
 -- 問29
 -- 全ての有名人の名前と国名をに出力してください。 ただしテーブル結合せずサブクエリを使用してください。
+
 SELECT
-    celeb.name,
-    c.name AS 国名
+    name AS 有名人名,
+    (
+        SELECT name
+        FROM countries
+        WHERE code = celebrities.country_code
+    ) AS 国名
 FROM
-    celebrities celeb
-LEFT JOIN
-    countries c ON celeb.country_code = c.code
+    celebrities
 ;
 
 
@@ -462,8 +414,6 @@ GROUP BY
     country_code
 HAVING
     MAX(age) >= 50 AND MIN(age) <= 30
-ORDER BY
-    country_code ASC
 ;
 
 
@@ -486,7 +436,6 @@ WHERE 人数 = (
     FROM celebrities
     WHERE birth::text LIKE '1991-%'
 )
-ORDER BY 誕生年
 ;
 
 
@@ -494,8 +443,8 @@ ORDER BY 誕生年
 -- 問32
 -- 有名人の出身国の平均年齢を高い方から順に表示してください。ただし、FROM句はcountriesテーブルとしてください。
 SELECT
-    c.name AS 国名,
-    ROUND(AVG(ce.age), 1) AS 平均年齢
+    c.name AS "国名",
+    AVG(ce.age) AS "平均年齢"
 FROM
     countries c
 JOIN
@@ -505,5 +454,4 @@ WHERE
 GROUP BY
     c.name
 ORDER BY
-    平均年齢 DESC
-;
+    "平均年齢" DESC;
